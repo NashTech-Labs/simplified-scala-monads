@@ -23,9 +23,9 @@ object Example10 extends App {
     val resultList = for {
         userOption      <- findUsers
         addressOption   <- userOption match {
-            case Some(user) => getAddressList(user)
-            case None => List(None)
-        }
+                            case Some(user) => getAddressList(user)
+                            case None => List(None)
+                        }
     } yield addressOption
 
     println(s"Result List: $resultList")
@@ -45,11 +45,59 @@ object Example10 extends App {
     val resultF = for {
         userOption      <- findUser(UUID.randomUUID())
         addressOption   <- userOption match {
-            case Some(user) => getAddressFuture(user)
-            case None => Future.successful(None)
-        }
+                            case Some(user) => getAddressFuture(user)
+                            case None => Future.successful(None)
+                        }
     } yield addressOption
 
     val resultFuture = Await.result(resultF, 1 seconds)
     println(s"Result Future: $resultFuture")
+
+    // ------------------------------------------------------------------------
+
+    trait Monad[M[_]] {
+
+        def pure[A] (a: A): M[A]
+
+        def map[A, B] (fa: M[A]) (f: A => B): M[B]
+
+        def flatMap[A, B] (fa: M[A]) (f: A => M[B]): M[B]
+    }
+
+    case class OptionT[M[_], A](value: M[Option[A]]) {
+
+        def flatMap[B](f: A => OptionT[M, B])(implicit M: Monad[M]): OptionT[M, B] = {
+            OptionT(M.flatMap(value)(opt => opt match {
+                case Some(a) => f(a).value
+                case None => M.pure(None)
+            }))
+        }
+
+        def map[B](f: A => B)(implicit M: Monad[M]): OptionT[M, B] = {
+            OptionT(M.map(value)(_.map(f)))
+        }
+    }
+
+    implicit val futureMonad = new Monad[Future] {
+        override def pure[A](a: A): Future[A] = Future.successful(a)
+
+        override def map[A, B](fa: Future[A])(f: A => B): Future[B] = fa.map(f)
+
+        override def flatMap[A, B](fa: Future[A])(f: A => Future[B]): Future[B] = fa.flatMap(f)
+    }
+
+    implicit val listMonad = new Monad[List] {
+        override def pure[A](a: A): List[A] = List(a)
+
+        override def map[A, B](fa: List[A])(f: A => B): List[B] = fa.map(f)
+
+        override def flatMap[A, B](fa: List[A])(f: A => List[B]): List[B] = fa.flatMap(f)
+    }
+
+    val composition : OptionT[List, Address] = for {
+        user        <- OptionT(findUsers)
+        address     <- OptionT(getAddressList(user))
+    } yield address
+
+    println(s"OptionT Result List: ${ composition.value }")
 }
