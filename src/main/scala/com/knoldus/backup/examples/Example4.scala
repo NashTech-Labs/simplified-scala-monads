@@ -1,6 +1,6 @@
 package com.knoldus.backup.examples
 
-object Example4 extends App {
+object Example4 {
 
     val result1 = for {
         a <- 1 to 5

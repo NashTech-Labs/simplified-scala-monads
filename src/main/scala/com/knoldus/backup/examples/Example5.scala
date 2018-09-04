@@ -1,6 +1,6 @@
 package com.knoldus.backup.examples
 
-object Example5 extends App {
+object Example5 {
 
     /**
       * def f(value: Int): (Int, String) = {

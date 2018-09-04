@@ -1,6 +1,6 @@
 package com.knoldus.backup.examples
 
-object Example2 extends App {
+object Example2 {
 
     val f: Int => Int = value => {
         println(s"Execute function f with $value value.")

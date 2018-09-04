@@ -5,7 +5,7 @@ import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 
-object Example7 extends App {
+object Example7 {
 
     case class User(id: UUID, email: String)
     case class Address(id: Int, city: String, country: String)

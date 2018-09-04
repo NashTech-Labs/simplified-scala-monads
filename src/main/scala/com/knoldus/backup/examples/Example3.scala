@@ -1,6 +1,6 @@
 package com.knoldus.backup.examples
 
-object Example3 extends App {
+object Example3 {
 
     def f(value: Int): (Int, String) = {
         (value + 57, s"Execute function f with $value value.")

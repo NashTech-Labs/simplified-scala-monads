@@ -2,7 +2,7 @@ package com.knoldus.backup.examples
 
 import java.util.UUID
 
-object Example6 extends App {
+object Example6 {
 
     case class User(id: UUID, email: String)
     case class Address(id: Int, city: String, country: String)

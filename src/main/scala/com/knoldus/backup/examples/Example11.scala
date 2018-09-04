@@ -4,7 +4,7 @@ import java.util.UUID
 import cats.data.OptionT
 import cats.instances.list._
 
-object Example11 extends App {
+object Example11 {
 
     case class User(id: UUID, email: String)
     case class Address(id: Int, city: String, country: String)

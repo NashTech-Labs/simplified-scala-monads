@@ -1,6 +1,6 @@
 package com.knoldus.backup.examples
 
-object Example1 extends App {
+object Example1 {
 
     def f(value: Int): Int = {
         println(s"Execute function f with $value value.")
