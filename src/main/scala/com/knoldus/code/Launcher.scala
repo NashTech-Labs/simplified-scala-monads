@@ -25,16 +25,15 @@ object Launcher extends App {
       * val resultF : Future[Unit] = for {
       * user        <- findUser(UUID.randomUUID())
       * address     <- getAddress(user)
-      * _           <- sendEmail(Email(user.email, address.city + " News", "Good News"))
       * } yield ()
       */
 
     val resultF = for {
         userOption      <- findUser(UUID.randomUUID())
         addressOption   <- userOption match {
-            case Some(user) => getAddress(user)
-            case None => Future.successful(None)
-        }
+                                case Some(user) => getAddress(user)
+                                case None => Future.successful(None)
+                            }
     } yield addressOption
 
     val result = Await.result(resultF, 1 seconds)
