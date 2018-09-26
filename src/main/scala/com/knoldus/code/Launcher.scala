@@ -9,7 +9,6 @@ object Launcher extends App {
 
     case class User(id: UUID, email: String)
     case class Address(id: Int, city: String, country: String)
-    case class Email(to: String, subject: String, body: String)
 
     def findUser(userId: UUID): Future[User] = {
         // perform async database operations and return user
