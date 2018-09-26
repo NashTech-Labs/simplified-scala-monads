@@ -23,9 +23,9 @@ object Launcher extends App {
     val resultList = for {
         userOption      <- findUsers
         addressOption   <- userOption match {
-            case Some(user) => getAddressList(user)
-            case None => List(None)
-        }
+                                case Some(user) => getAddressList(user)
+                                case None => List(None)
+                            }
     } yield addressOption
 
     println(s"Result List: $resultList")
@@ -45,9 +45,9 @@ object Launcher extends App {
     val resultF = for {
         userOption      <- findUser(UUID.randomUUID())
         addressOption   <- userOption match {
-            case Some(user) => getAddressFuture(user)
-            case None => Future.successful(None)
-        }
+                                case Some(user) => getAddressFuture(user)
+                                case None => Future.successful(None)
+                            }
     } yield addressOption
 
     val resultFuture = Await.result(resultF, 1 seconds)
